@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iot.cloudback.dao.UserDao">
+
+    <insert id="addUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert into user (id, name, password, email, age, authority)
+        values (#{id}, #{name}, #{password}, #{email}, #{age}, #{authority})
+    </insert>
+
+    <select id="findUser" resultType="User" parameterType="User">
+        select * from user
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id!=0">
+                id = #{id}
+            </if>
+            <if test="name!=null and name!=''">
+                and name = #{name}
+            </if>
+            <if test="password!=null and password!=''">
+                and password = #{password}
+            </if>
+            <if test="email!=null and email!=''">
+                and email = #{email}
+            </if>
+            <if test="age!=0">
+                and age = #{age}
+            </if>
+        </trim>
+    </select>
+
+    <update id="updateUserInfo" parameterType="User">
+        update user
+        <set>
+            <if test="name!=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="password!=null and password!=''">
+                password = #{password},
+            </if>
+            <if test="email!=null and email!=''">
+                email = #{email},
+            </if>
+            <if test="age!=0">
+                age = #{age},
+            </if>
+            <if test="authority!=0">
+                authority = #{authority}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteUser" parameterType="User">
+        delete from user
+        <trim prefix="where" prefixOverrides="and | or">
+            <if test="id!=0">
+                id = #{id}
+            </if>
+            <if test="name !=null and name!=''">
+                and name = #{name}
+            </if>
+            <if test="email!=null and email!=''">
+                and email = #{email}
+            </if>
+            <if test="age!=0">
+                and age = #{age}
+            </if>
+        </trim>
+    </delete>
+</mapper>
